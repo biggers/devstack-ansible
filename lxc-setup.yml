@@ -1,0 +1,28 @@
+---
+## REF: http://www.hashbangcode.com/blog/ansible-ssh-setup-playbook
+
+- hosts: all
+  user: root
+  vars_files:
+    - customize.yml
+  sudo: True
+
+  tasks:
+  - file: path=/etc/sudoers.d  state=directory
+
+  - name: setup | user can run all commands w/o passwd
+    lineinfile: "dest=/etc/sudoers.d/ubuntu
+      create=Yes  state=present
+      regexp='{{ username }} ALL=(ALL) NOPASSWD: ALL'
+      line='{{ username }} ALL=(ALL) NOPASSWD: ALL'"
+
+  - name: deploy auth pubkey
+    authorized_key: user={{ username }}
+      key="{{ local_ssh_pubkey }}"
+      path="/home/{{ username }}/.ssh/authorized_keys"
+      manage_dir=no
+
+#  - name: synchronize the known_hosts file.
+#    copy: dest=/home/{{ username }}/.ssh/known_hosts
+#      src=~/.ssh/known_hosts 
+#      owner={{ username }} mode=0644

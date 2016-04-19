@@ -1,1 +1,9 @@
 customize.yml
+*~
+*.log
+*.pyc
+*.pyo
+bin
+include
+lib
+local

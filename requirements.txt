@@ -1,0 +1,5 @@
+## devstack-ansible
+ansible==1.9.5
+python-novaclient
+python-neutronclient
+python-openstackclient
